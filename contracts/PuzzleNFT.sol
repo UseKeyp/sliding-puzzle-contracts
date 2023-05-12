@@ -9,9 +9,9 @@ contract PuzzleNFT is Ownable, ERC1155URIStorage {
     mapping(address => bool) isMinter;
     string public baseURI;
 
-    constructor() ERC1155("") {
+    constructor() ERC1155("QmbH7yPsnoCJdm6oxyU86KANJ4HTjHFMmAQE7PfcEVmiPR") {
         isMinter[msg.sender] = true;
-        baseURI = "";
+        baseURI = "QmbH7yPsnoCJdm6oxyU86KANJ4HTjHFMmAQE7PfcEVmiPR";
     }
 
     function setURI(string memory newuri) public onlyOwner {
@@ -23,8 +23,12 @@ contract PuzzleNFT is Ownable, ERC1155URIStorage {
         _mint(account, id, 1, ""); // mints 1 NFT of chosen ID
     }
 
-    function updateMinter(address _minter) public onlyOwner {
+    function addMinter(address _minter) public onlyOwner {
         isMinter[_minter] = true;
+    }
+
+    function removeMinter(address _minter) public onlyOwner {
+        isMinter[_minter] = false;
     }
 
     function updateBaseURI(string memory _based) public onlyOwner {
