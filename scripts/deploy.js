@@ -7,14 +7,16 @@
 const hre = require("hardhat");
 
 async function main() {
+  const baseURI = "QmbH7yPsnoCJdm6oxyU86KANJ4HTjHFMmAQE7PfcEVmiPR";
 
   const PuzzleNFT = await hre.ethers.getContractFactory("PuzzleNFT");
-  const puzzleNFT = await PuzzleNFT.deploy();
+  const puzzleNFT = await PuzzleNFT.deploy(baseURI);
+  console.log('address of singer: ', (await hre.ethers.getSigner()).address);
 
   await puzzleNFT.deployed();
 
   console.log(
-    `PuzzleNFT deployed to ${puzzleNFT.address}`
+    `PuzzleNFT deployed to ${puzzleNFT.address} with baseURI ${baseURI}`
   );
 }
 

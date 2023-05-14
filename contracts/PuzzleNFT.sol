@@ -6,12 +6,17 @@ import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol";
 
 /// @custom:security-contact team@usekeyp.com
 contract PuzzleNFT is Ownable, ERC1155URIStorage {
+    struct UserHasMinted {
+      bool isValue;
+    }
+
     mapping(address => bool) isMinter;
+    mapping(uint256 => mapping(address => UserHasMinted)) public tokenIdToOwner;
     string public baseURI;
 
-    constructor() ERC1155("QmbH7yPsnoCJdm6oxyU86KANJ4HTjHFMmAQE7PfcEVmiPR") {
+    constructor(string memory _baseURI) ERC1155(_baseURI) {
         isMinter[msg.sender] = true;
-        baseURI = "QmbH7yPsnoCJdm6oxyU86KANJ4HTjHFMmAQE7PfcEVmiPR";
+        baseURI = _baseURI;
     }
 
     function setURI(string memory newuri) public onlyOwner {
@@ -19,8 +24,10 @@ contract PuzzleNFT is Ownable, ERC1155URIStorage {
     }
 
     function mint(address account, uint256 id) public {
-        require(isMinter[msg.sender]);
+        require(isMinter[msg.sender], "Only minter address is allowed to mint");
+        require(tokenIdToOwner[id][account].isValue != true, "Maximum 1 token per address");
         _mint(account, id, 1, ""); // mints 1 NFT of chosen ID
+        tokenIdToOwner[id][account] = UserHasMinted(true);
     }
 
     function addMinter(address _minter) public onlyOwner {
