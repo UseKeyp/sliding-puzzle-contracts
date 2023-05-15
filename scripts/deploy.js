@@ -6,6 +6,10 @@
 // global scope, and execute the script.
 const hre = require("hardhat");
 
+const Minters = [
+  "0xafa9f9f984e47d883db2d017d7ad589007c6a3e8"
+]
+
 async function main() {
   const baseURI = "QmbH7yPsnoCJdm6oxyU86KANJ4HTjHFMmAQE7PfcEVmiPR";
 
@@ -18,6 +22,11 @@ async function main() {
   console.log(
     `PuzzleNFT deployed to ${puzzleNFT.address} with baseURI ${baseURI}`
   );
+  
+  Minters.forEach(async (minterAddress, i) => {
+    const setMinterResponse = await puzzleNFT.addMinter(minterAddress);
+    console.log(`setMinterResponse ${i}: ${JSON.stringify(setMinterResponse)}`);
+  });
 }
 
 // We recommend this pattern to be able to use async/await everywhere
