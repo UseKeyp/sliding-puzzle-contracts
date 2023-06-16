@@ -24,7 +24,6 @@ contract PuzzleNFT is Ownable, ERC1155URIStorage {
     }
 
     function mint(address account, uint256 id) public {
-        require(isMinter[msg.sender].isValue == true, "Only minter address is allowed to mint");
         // only non minter addresses must not mint more than 1 token
         if (isMinter[account].isValue != true) {
           require(tokenIdToOwner[id][account].isValue != true, "Maximum 1 token per address");
